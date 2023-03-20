@@ -8,7 +8,7 @@ setup(
   author = 'Louis Gambardella',
   author_email = 'louis.gambardella03@gmail.com',
   url = 'https://github.com/merwynnn/pyNDL',
-  download_url = 'https://github.com/merwynnn/pyNDL/archive/refs/tags/v_01.tar.gz',
+  download_url = 'https://github.com/merwynnn/pyNDL/archive/refs/tags/v_02.tar.gz',
   keywords = ['Nodal', 'Language', 'pyNDL', 'Blueprint'],
   install_requires=[
           'numpy',
