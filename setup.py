@@ -1,6 +1,6 @@
 from distutils.core import setup
 setup(
-  name = 'pyNDL',
+  name = 'python-NDL',
   packages = ['pyNDL'],
   version = '0.1',
   license='MIT',
@@ -8,11 +8,13 @@ setup(
   author = 'Louis Gambardella',
   author_email = 'louis.gambardella03@gmail.com',
   url = 'https://github.com/merwynnn/pyNDL',
-  download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',
+  download_url = 'https://github.com/merwynnn/pyNDL/archive/refs/tags/v_01.tar.gz',
   keywords = ['Nodal', 'Language', 'NodalLanguage', 'Blueprint'],
   install_requires=[
-          'validators',
-          'beautifulsoup4',
+          'numpy',
+          'pygame',
+          'Pillow',
+          'pyperclip'
       ],
   classifiers=[
     'Development Status :: 3 - Alpha',
