@@ -4,7 +4,7 @@ from math import sqrt
 import numpy as np
 import pygame
 
-from NodalLanguage.Colors import colors
+from pyNDL.Colors import colors
 
 
 class Rope:
@@ -25,7 +25,7 @@ class Rope:
         self.is_hovered = False
 
         if pos1 is not None and pos2 is not None:
-            from NodalLanguage.Pin import Input
+            from pyNDL.Pin import Input
             if type(pin) is Input:
                 pos1_s = pos1
                 pos2_s = pos2

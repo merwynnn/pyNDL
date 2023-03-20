@@ -1,13 +1,13 @@
 
-from NodalLanguage.Node import ImpureNode, PureNode, Event, NodePrefab, Node, EndingNode
-from NodalLanguage.Pin import Input, Output
+from pyNDL.Node import ImpureNode, PureNode, Event, NodePrefab, Node, EndingNode
+from pyNDL.Pin import Input, Output
 
-from NodalLanguage.Prefabs.PythonBasic import *
-from NodalLanguage.Prefabs.Operations import *
-from NodalLanguage.Prefabs.VarAndFunc import *
-from NodalLanguage.Prefabs.List import *
-from NodalLanguage.Prefabs.Numpy import *
-from NodalLanguage.Prefabs.Pillow import *
+from pyNDL.Prefabs.PythonBasic import *
+from pyNDL.Prefabs.Operations import *
+from pyNDL.Prefabs.VarAndFunc import *
+from pyNDL.Prefabs.List import *
+from pyNDL.Prefabs.Numpy import *
+from pyNDL.Prefabs.Pillow import *
 
 class EventStart(Event, NodePrefab):
 

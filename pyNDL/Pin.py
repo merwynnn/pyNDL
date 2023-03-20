@@ -2,9 +2,9 @@ import copy
 
 import pygame
 
-from NodalLanguage.Colors import colors
-from NodalLanguage.Rope import Rope
-from NodalLanguage.TextBox import TextBox
+from pyNDL.Colors import colors
+from pyNDL.Rope import Rope
+from pyNDL.TextBox import TextBox
 pygame.font.init()
 
 small_text_size = 15
@@ -48,7 +48,7 @@ class Pin:
     def __setstate__(self, state):
         """ Called on load data from file (unpickle) """
         self.__dict__.update(state)
-        # Add nodalLanguage and display back since it doesn't exist in the pickle
+        # Add pyNDL and display back since it doesn't exist in the pickle
         self.ropes = set()
 
     def execute(self):
@@ -178,7 +178,7 @@ class Input(Pin):
             self.value = self.text_box.value
             self._display_value = self.text_box.text
         if self._value != last_value:
-            self.node.nodalLanguage.action()
+            self.node.pyNDL.action()
 
     def frame(self, camera_delta, events, pos):
         input_name = small_font.render(self.name, True, (255, 255, 255))
@@ -217,7 +217,7 @@ class Input(Pin):
             self.text_box.is_active = False
         from Shyne.Sprite import Sprite
         if type(self._value) is Sprite:
-            self._value = self.node.nodalLanguage.parent.shyne.get_sprite_with_id(self._value.id)
+            self._value = self.node.pyNDL.parent.shyne.get_sprite_with_id(self._value.id)
 
     def __deepcopy__(self, memo):
         new_input = Input(self.name, memo[-1], is_execution_pin=self.is_execution_pin, ptype=self.type, text_box_width_mult=self.text_box_width_mult, show_text_box=self.show_text_box, is_deletable=self.is_deletable, is_dropdown=self.is_dropdown, dropdown=self.dropdown)
@@ -260,7 +260,7 @@ class Output(Pin):
 
         self.is_deletable = is_deletable
 
-        from NodalLanguage.Node import PureNode
+        from pyNDL.Node import PureNode
         self.need_reload = True if isinstance(self.node, PureNode) else False
 
     def __deepcopy__(self, memo):
@@ -323,7 +323,7 @@ class Output(Pin):
     def __setstate__(self, state):
         """ Called on load data from file (unpickle) """
         self.__dict__.update(state)
-        # Add nodalLanguage and display back since it doesn't exist in the pickle
+        # Add pyNDL and display back since it doesn't exist in the pickle
         self.ropes = set()
         self._stored_value = None
 

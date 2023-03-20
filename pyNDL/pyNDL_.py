@@ -155,7 +155,7 @@ class pyNDL:
                             self.action()
                             nodes_pos = data[-1].pos
                             for node in data:
-                                node.setNodalLanguage(self)
+                                node.setpyNDL(self)
                                 for pin in list(node.inputs.values()) + list(node.outputs.values()):
                                     if pin.is_input:
                                         pin.set_text_box()
@@ -372,7 +372,7 @@ class pyNDL:
         self.action()
         new_node = copy.copy(node)
         new_node.pos = self.get_pos_with_delta(pos)
-        new_node.setNodalLanguage(self)
+        new_node.setpyNDL(self)
         self.data.nodes.append(new_node)
         self.select_node(new_node)
         return new_node
@@ -466,7 +466,7 @@ class pyNDL:
         for node in nodes:
             for input in node.inputs.values():
                 input.ropes = []
-            node.setNodalLanguage(self)
+            node.setpyNDL(self)
 
     def add_variable(self, variable, is_local=False):
         """ Add a new variable """
@@ -545,7 +545,7 @@ class pyNDL:
     def undo_redo(self, action):
         self.data.nodes = action[0]
         for node in self.data.nodes:
-            node.setNodalLanguage(self)
+            node.setpyNDL(self)
             for pin in node.inputs.values():
                 pin.set_text_box()
 

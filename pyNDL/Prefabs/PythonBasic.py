@@ -1,7 +1,7 @@
 import time
 
-from NodalLanguage.Node import *
-from NodalLanguage.Pin import *
+from pyNDL.Node import *
+from pyNDL.Pin import *
 
 
 class Print(ImpureNode, NodePrefab):

@@ -1,6 +1,6 @@
-from NodalLanguage.Components import NameSetter
-from NodalLanguage.Node import *
-from NodalLanguage.Pin import *
+from pyNDL.Components import NameSetter
+from pyNDL.Node import *
+from pyNDL.Pin import *
 
 
 class SetVariable(ImpureNode, NodePrefab):
@@ -25,7 +25,7 @@ class SetVariable(ImpureNode, NodePrefab):
 
     def on_load(self):
         if self.variable:
-            self.variable = self.nodalLanguage.get_variable_from_id(self.variable.id)
+            self.variable = self.pyNDL.get_variable_from_id(self.variable.id)
 
 
 class GetVariable(PureNode, NodePrefab):
@@ -54,7 +54,7 @@ class GetVariable(PureNode, NodePrefab):
 
     def on_load(self):
         if self.variable:
-            self.variable = self.nodalLanguage.get_variable_from_id(self.variable.id)
+            self.variable = self.pyNDL.get_variable_from_id(self.variable.id)
 
 
 class Func(ImpureNode, NodePrefab):
@@ -114,7 +114,7 @@ class FuncIn(ImpureNode, NodePrefab):
 
     def on_add_item_btn_pressed(self):
         new_input = Output("Name", self, ptype=None, is_deletable=True)
-        self.nodalLanguage.gui_components.append(NameSetter(self.nodalLanguage, self.display, new_input))
+        self.pyNDL.gui_components.append(NameSetter(self.pyNDL, self.display, new_input))
 
 
 class ReturnNode(EndingNode, NodePrefab):

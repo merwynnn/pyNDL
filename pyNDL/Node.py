@@ -2,8 +2,8 @@ import inspect
 import math
 import copy
 
-from NodalLanguage import Components
-from NodalLanguage.Pin import *
+from pyNDL import Components
+from pyNDL.Pin import *
 
 pygame.font.init()
 
@@ -39,7 +39,7 @@ class Node:
 
         self.is_event = False
 
-        self.nodalLanguage = None
+        self.pyNDL = None
 
         self.display = None
 
@@ -59,9 +59,9 @@ class Node:
         self.imports = []       # Library to import
         self.custom_vars = []
 
-    def setNodalLanguage(self, nodalLanguage):
-        self.nodalLanguage = nodalLanguage
-        self.display = self.nodalLanguage.display
+    def setpyNDL(self, pyNDL):
+        self.pyNDL = pyNDL
+        self.display = self.pyNDL.display
         self.add_item_btn = Components.AddItemButton(self.display, (0, 0), (10, 10), self)
         self.add_item_btn.display = self.display
         self.calculate_size()
@@ -248,7 +248,7 @@ class Node:
         # Don't pickle display
         try:
             del state["display"]
-            del state["nodalLanguage"]
+            del state["pyNDL"]
             del state["add_item_btn"]
             for var in self.unpickle_vars:
                 del state[var]

@@ -1,15 +1,15 @@
 import pygame
 
-from NodalLanguage.Pin import Input, Output
-from NodalLanguage.Rope import Rope
-from NodalLanguage.TextBox import TextBox
+from pyNDL.Pin import Input, Output
+from pyNDL.Rope import Rope
+from pyNDL.TextBox import TextBox
 
 
 class NodeSelector:
     BACKGROUND_COLOR = (51, 51, 51)
 
-    def __init__(self, nodalLanguage, display, nodes):
-        self.nodalLanguage = nodalLanguage
+    def __init__(self, pyNDL, display, nodes):
+        self.pyNDL = pyNDL
         self.display = display
         self.nodes = nodes
 
@@ -73,19 +73,19 @@ class NodeSelector:
                 node_picker.draw(pos)
 
     def add_node(self, node):
-        new_node = self.nodalLanguage.add_node(node, self.pos)
+        new_node = self.pyNDL.add_node(node, self.pos)
         if self.current_pin is not None:
             if type(self.current_pin) is Input:
                 for output in new_node.outputs.values():
                     if output.is_execution_pin == self.current_pin.is_execution_pin:
                         rope = Rope(self.display)
-                        self.nodalLanguage.connect_pins(self.current_pin, output, rope)
+                        self.pyNDL.connect_pins(self.current_pin, output, rope)
                         return
             elif type(self.current_pin) is Output:
                 for input_ in new_node.inputs.values():
                     if input_.is_execution_pin == self.current_pin.is_execution_pin:
                         rope = Rope(self.display)
-                        self.nodalLanguage.connect_pins(input_, self.current_pin, rope)
+                        self.pyNDL.connect_pins(input_, self.current_pin, rope)
                         return
 
     def is_hovered(self, mouse_pos):
@@ -116,7 +116,7 @@ class NodeSelector:
         if current_pin is not False:
             self.current_pin = current_pin
         self.isvisible = True
-        self.nodalLanguage.focus_blocked = True
+        self.pyNDL.focus_blocked = True
         self.text_box.reset()
         self.node_pickers = []
         self.search()
@@ -124,7 +124,7 @@ class NodeSelector:
     def disable(self):
         self.isvisible = False
         self.current_pin = None
-        self.nodalLanguage.focus_blocked = False
+        self.pyNDL.focus_blocked = False
 
 
 class NodePicker:

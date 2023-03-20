@@ -1,7 +1,7 @@
 import copy
 import random
 
-from NodalLanguage.DataHandler import Data
+from pyNDL.DataHandler import Data
 
 
 class Variable:
@@ -39,7 +39,7 @@ class Function:
         self.data.is_main = False
 
         self.inputs = {}
-        from NodalLanguage.Prefabs.VarAndFunc import FuncIn, ReturnNode
+        from pyNDL.Prefabs.VarAndFunc import FuncIn, ReturnNode
         self.inputs_node = FuncIn()
         self.inputs_node.on_function_change(self)
         self.inputs_node.pos = (-100, -10)
@@ -75,7 +75,7 @@ class Function:
     def __copy__(self):
         func = Function(self.name)
         func.data = copy.copy(self.data)
-        from NodalLanguage.Prefabs.VarAndFunc import FuncIn, ReturnNode
+        from pyNDL.Prefabs.VarAndFunc import FuncIn, ReturnNode
         for node in func.data.nodes:
             if type(node) is FuncIn:
                 func.inputs_node = node

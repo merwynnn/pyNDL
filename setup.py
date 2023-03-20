@@ -9,7 +9,7 @@ setup(
   author_email = 'louis.gambardella03@gmail.com',
   url = 'https://github.com/merwynnn/pyNDL',
   download_url = 'https://github.com/merwynnn/pyNDL/archive/refs/tags/v_01.tar.gz',
-  keywords = ['Nodal', 'Language', 'NodalLanguage', 'Blueprint'],
+  keywords = ['Nodal', 'Language', 'pyNDL', 'Blueprint'],
   install_requires=[
           'numpy',
           'pygame',

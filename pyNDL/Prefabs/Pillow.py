@@ -1,7 +1,7 @@
 from PIL import Image
 
-from NodalLanguage.Node import *
-from NodalLanguage.Pin import *
+from pyNDL.Node import *
+from pyNDL.Pin import *
 
 
 class OpenImage(PureNode, NodePrefab):

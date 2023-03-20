@@ -3,11 +3,11 @@ import math
 
 import pygame
 
-from NodalLanguage import NodePrefabs
-from NodalLanguage.TextBox import TextBox
+from pyNDL import NodePrefabs
+from pyNDL.TextBox import TextBox
 
-from NodalLanguage.Assets import images
-from NodalLanguage.VariableAndFunction import Function, Variable
+from pyNDL.Assets import images
+from pyNDL.VariableAndFunction import Function, Variable
 from pygame.constants import *
 
 pygame.font.init()
@@ -77,9 +77,9 @@ class Button:
 
 
 class GoBackButton(Button):
-    def __init__(self, nodalLanguage, display, pos):
+    def __init__(self, pyNDL, display, pos):
         super().__init__(display, pos, (50, 37), self.on_pressed)
-        self.nodalLanguage = nodalLanguage
+        self.pyNDL = pyNDL
 
         self.go_back_arrow = images["go_back_arrow"]
         self.go_back_arrow = pygame.transform.scale(self.go_back_arrow, self.size)
@@ -95,14 +95,14 @@ class GoBackButton(Button):
         self.display.blit(self.go_back_arrow_hovered, self.pos)
 
     def on_pressed(self):
-        self.nodalLanguage.go_back()
+        self.pyNDL.go_back()
 
 
 class NameSetter:
     BACKGROUND_COLOR = (51, 51, 51)
     title_font = pygame.font.SysFont('arial', 20)
 
-    def __init__(self, nodalLanguage, display, pin):
+    def __init__(self, pyNDL, display, pin):
         self.display = display
         self.size = (350, 83)
         self.pos = None
@@ -112,8 +112,8 @@ class NameSetter:
 
         self.pin = pin
 
-        self.nodalLanguage = nodalLanguage
-        self.nodalLanguage.set_focus_blocked(True)
+        self.pyNDL = pyNDL
+        self.pyNDL.set_focus_blocked(True)
 
     def frame(self, camera_delta, events, pos):
         if self.pos is None:
@@ -150,8 +150,8 @@ class NameSetter:
         self.pin.node.function.add_input(self.pin.name)
         self.pin.node.outputs[self.pin.name] = self.pin
         self.pin.node.calculate_size()
-        self.nodalLanguage.set_focus_blocked(False)
-        self.nodalLanguage.gui_components.remove(self)
+        self.pyNDL.set_focus_blocked(False)
+        self.pyNDL.gui_components.remove(self)
         del self
 
 
@@ -225,8 +225,8 @@ class Selector:
     BACKGROUND_COLOR = (51, 51, 51)
     title_font = pygame.font.SysFont('arial', 20)
 
-    def __init__(self, display, pos, size, hint, items, viewer, create_viewer=None, nodalLanguage=None):
-        self.nodalLanguage = nodalLanguage
+    def __init__(self, display, pos, size, hint, items, viewer, create_viewer=None, pyNDL=None):
+        self.pyNDL = pyNDL
 
         self.display = display
 
@@ -302,7 +302,7 @@ class Selector:
         text = self.text_box.text.lower()
         for item in self.items:
             if item.name.lower().find(text) != -1:
-                func_viewer = self.viewer(self.nodalLanguage, self.scroll_view.display, item, size=(self.size[0], 40), pos=(0, 0),
+                func_viewer = self.viewer(self.pyNDL, self.scroll_view.display, item, size=(self.size[0], 40), pos=(0, 0),
                                           delta_pos=self.scroll_view.pos)
 
                 if item.name.lower() == self.text_box.text.lower():
@@ -313,7 +313,7 @@ class Selector:
         if self.text_box.text != "" and self.text_box.text not in item_names:
             if self.create_viewer:
                 viewers.insert(0,
-                               self.create_viewer(self.nodalLanguage, self.scroll_view.display, size=(self.size[0], 40),
+                               self.create_viewer(self.pyNDL, self.scroll_view.display, size=(self.size[0], 40),
                                                   delta_pos=self.scroll_view.pos))
         self.scroll_view.set_items(viewers)
 
@@ -324,8 +324,8 @@ class Selector:
         return False
 
     def disable(self):
-        self.nodalLanguage.set_focus_blocked(False)
-        self.nodalLanguage.gui_components.remove(self)
+        self.pyNDL.set_focus_blocked(False)
+        self.pyNDL.gui_components.remove(self)
         del self
 
     def on_clicked(self, viewer):
@@ -348,16 +348,16 @@ class Selector:
 
 
 class FunctionSelector(Selector):
-    def __init__(self, nodalLanguage, display, pos, size):
-        super().__init__(display, pos, size, "Select a function", nodalLanguage.data.functions,
-                         FunctionViewer, create_viewer=CreateFunction, nodalLanguage=nodalLanguage)
+    def __init__(self, pyNDL, display, pos, size):
+        super().__init__(display, pos, size, "Select a function", pyNDL.data.functions,
+                         FunctionViewer, create_viewer=CreateFunction, pyNDL=pyNDL)
 
         self.current_moving_func = None
 
     def on_clicked(self, viewer):
         if type(viewer) == CreateFunction:
             new_func = Function(self.text_box.text)
-            self.nodalLanguage.add_function(new_func)
+            self.pyNDL.add_function(new_func)
         else:
             viewer.on_open()
         self.text_box.text = ""
@@ -365,11 +365,11 @@ class FunctionSelector(Selector):
 
     def on_drag(self, viewer, camera_delta, mouse_pos):
         if not self.current_moving_func:
-            from NodalLanguage.Prefabs import VarAndFunc
-            func = self.nodalLanguage.add_node(VarAndFunc.Func(), mouse_pos)
+            from pyNDL.Prefabs import VarAndFunc
+            func = self.pyNDL.add_node(VarAndFunc.Func(), mouse_pos)
             func.on_function_change(viewer.function)
             self.current_moving_func = func
-            self.nodalLanguage.is_object_moving = True
+            self.pyNDL.is_object_moving = True
         else:
             self.current_moving_func.pos = get_pos_with_delta(camera_delta, mouse_pos)
 
@@ -381,8 +381,8 @@ class Viewer:
     FOCUSED_COLOR = (64, 63, 63)
     main_font = pygame.font.SysFont('arial', 15)
 
-    def __init__(self, nodalLanguage, display, pos, delta_pos, size):
-        self.nodalLanguage = nodalLanguage
+    def __init__(self, pyNDL, display, pos, delta_pos, size):
+        self.pyNDL = pyNDL
 
         self.display = display
         self.pos = pos
@@ -428,16 +428,16 @@ class Viewer:
 
 class CreateFunction(Viewer):
 
-    def __init__(self, nodalLanguage, display, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
-        super().__init__(nodalLanguage, display, pos, delta_pos, size)
+    def __init__(self, pyNDL, display, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
+        super().__init__(pyNDL, display, pos, delta_pos, size)
         self.text = "Create new function"
         self.show_delete_btn = False
 
 
 class FunctionViewer(Viewer):
 
-    def __init__(self, nodalLanguage, display, function, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
-        super().__init__(nodalLanguage, display, pos, delta_pos, size)
+    def __init__(self, pyNDL, display, function, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
+        super().__init__(pyNDL, display, pos, delta_pos, size)
         self.function = function
         self.text = self.function.name
         self._is_deleted = False
@@ -446,33 +446,33 @@ class FunctionViewer(Viewer):
         super().frame(camera_delta, events, pos)
 
     def on_delete(self):
-        self.nodalLanguage.delete_function(self.function)
+        self.pyNDL.delete_function(self.function)
         self._is_deleted = True
 
     def on_open(self):
         if not self._is_deleted:
-            self.nodalLanguage.open_function(self.function)
+            self.pyNDL.open_function(self.function)
 
 
 class VariableSelector(Selector):
-    def __init__(self, nodalLanguage, display, pos, size, is_local=False):
+    def __init__(self, pyNDL, display, pos, size, is_local=False):
         super().__init__(display, pos, size,
                          "Select a local variable" if is_local else "Select a variable",
-                         nodalLanguage.data.variables if is_local else nodalLanguage.get_main_data().variables,
-                         VariableViewer, create_viewer=CreateVariable, nodalLanguage=nodalLanguage)
+                         pyNDL.data.variables if is_local else pyNDL.get_main_data().variables,
+                         VariableViewer, create_viewer=CreateVariable, pyNDL=pyNDL)
 
         self.is_local = is_local
 
         self.current_moving_var = None
 
     def update_items(self):
-        self.items = self.nodalLanguage.data.variables if self.is_local else self.nodalLanguage.get_main_data().variables
+        self.items = self.pyNDL.data.variables if self.is_local else self.pyNDL.get_main_data().variables
         self.search()
 
     def on_clicked(self, viewer):
         if type(viewer) == CreateVariable:
             new_variable = Variable(self.text_box.text)
-            self.nodalLanguage.add_variable(new_variable, is_local=self.is_local)
+            self.pyNDL.add_variable(new_variable, is_local=self.is_local)
         self.text_box.text = ""
         self.current_moving_var = None
 
@@ -490,10 +490,10 @@ class VariableSelector(Selector):
                     var = viewer.variable.custom_get()
                 else:
                     var = NodePrefabs.GetVariable()
-            var = self.nodalLanguage.add_node(var, mouse_pos)
+            var = self.pyNDL.add_node(var, mouse_pos)
             var.on_variable_change(viewer.variable)
             self.current_moving_var = var
-            self.nodalLanguage.is_object_moving = True
+            self.pyNDL.is_object_moving = True
         else:
             self.current_moving_var.pos = get_pos_with_delta(camera_delta, mouse_pos)
 
@@ -503,20 +503,20 @@ class VariableSelector(Selector):
 
 class VariableViewer(Viewer):
 
-    def __init__(self, nodalLanguage, display, variable, pos=(0, 0), delta_pos=(0, 0), size=(0, 0), is_local=False):
-        super().__init__(nodalLanguage, display, pos, delta_pos, size)
+    def __init__(self, pyNDL, display, variable, pos=(0, 0), delta_pos=(0, 0), size=(0, 0), is_local=False):
+        super().__init__(pyNDL, display, pos, delta_pos, size)
         self.variable = variable
         self.text = self.variable.name
         self.is_local = is_local
 
     def on_delete(self):
-        self.nodalLanguage.delete_variable(self.variable, is_local=self.is_local)
+        self.pyNDL.delete_variable(self.variable, is_local=self.is_local)
 
 
 class CreateVariable(Viewer):
 
-    def __init__(self, nodalLanguage, display, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
-        super().__init__(nodalLanguage, display, pos, delta_pos, size)
+    def __init__(self, pyNDL, display, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
+        super().__init__(pyNDL, display, pos, delta_pos, size)
         self.text = "Create new variable"
         self.show_delete_btn = False
 
@@ -524,13 +524,13 @@ class CreateVariable(Viewer):
 class TopBar:
     BACKGROUND_COLOR = (61, 61, 61)
 
-    def __init__(self, nodalLanguage, display, pos, size):
-        self.nodalLanguage = nodalLanguage
+    def __init__(self, pyNDL, display, pos, size):
+        self.pyNDL = pyNDL
         self.display = display
         self.pos = pos
         self.size = size
 
-        self.gui_components = [StartButton(self.nodalLanguage, self.display, (self.pos[0] + 10, self.pos[1] + 5))]
+        self.gui_components = [StartButton(self.pyNDL, self.display, (self.pos[0] + 10, self.pos[1] + 5))]
 
     def frame(self, camera_delta, events, pos):
         rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
@@ -543,21 +543,21 @@ class TopBar:
 class LeftBar:
     BACKGROUND_COLOR = (61, 61, 61)
 
-    def __init__(self, nodalLanguage, display, pos, size):
+    def __init__(self, pyNDL, display, pos, size):
 
-        self.nodalLanguage = nodalLanguage
+        self.pyNDL = pyNDL
 
         self.display = display
         self.pos = pos
         self.size = size
 
-        self.function_selector = FunctionSelector(self.nodalLanguage, self.display, pos=self.pos,
+        self.function_selector = FunctionSelector(self.pyNDL, self.display, pos=self.pos,
                                                   size=(self.size[0], self.size[1] / 2))
-        self.variable_selector = VariableSelector(self.nodalLanguage, self.display,
+        self.variable_selector = VariableSelector(self.pyNDL, self.display,
                                                   pos=(self.pos[0], self.pos[1] + self.function_selector.size[1]),
                                                   size=(self.size[0], self.size[1] / 2))
 
-        self.local_variable_selector = VariableSelector(self.nodalLanguage, self.display,
+        self.local_variable_selector = VariableSelector(self.pyNDL, self.display,
                                                         pos=(self.pos[0], self.pos[1] + self.function_selector.size[1] +
                                                              self.variable_selector.size[1] / 2),
                                                         size=(self.size[0], self.size[1] / 4), is_local=True)
@@ -572,7 +572,7 @@ class LeftBar:
             gui_component.frame(camera_delta, events, pos)
 
     def update(self):
-        if self.nodalLanguage.is_in_function:
+        if self.pyNDL.is_in_function:
             if self.local_variable_selector not in self.gui_components:
                 self.gui_components.append(self.local_variable_selector)
                 self.local_variable_selector.update_items()
@@ -632,9 +632,9 @@ class AddItemButton(Button):
 
 
 class StartButton(Button):
-    def __init__(self, nodalLanguage, display, pos):
+    def __init__(self, pyNDL, display, pos):
         super().__init__(display, pos, (20, 30), self.on_btn_pressed)
-        self.nodalLanguage = nodalLanguage
+        self.pyNDL = pyNDL
 
     def blit(self):
         pygame.draw.polygon(self.display, (46, 163, 77),
@@ -647,7 +647,7 @@ class StartButton(Button):
                              (self.pos[0], self.pos[1] + self.size[1])])
 
     def on_btn_pressed(self):
-        self.nodalLanguage.start()
+        self.pyNDL.start()
 
     def is_hovered(self, mouse_pos):
         if self.pos[0] <= mouse_pos[0] <= self.pos[0] + self.size[0] and self.pos[1] <= mouse_pos[1] <= self.pos[1] + \
@@ -684,8 +684,8 @@ class KeyPicker(Selector):
 
 
 class KeyViewer(Viewer):
-    def __init__(self, nodalLanguage, display, item, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
-        super().__init__(nodalLanguage, display, pos, delta_pos, size)
+    def __init__(self, pyNDL, display, item, pos=(0, 0), delta_pos=(0, 0), size=(0, 0)):
+        super().__init__(pyNDL, display, pos, delta_pos, size)
         self.key = item
         self.text = self.key.name
         self.show_delete_btn = False
