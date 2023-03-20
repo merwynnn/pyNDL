@@ -1,0 +1,4 @@
+numpy~=1.23.0
+pygame~=2.1.2
+Pillow~=9.2.0
+pyperclip~=1.8.2
