@@ -14,7 +14,7 @@ small_font = pygame.font.SysFont('arial', small_text_size)
 
 
 class Node:
-    BACKGROUND_COLOR = (53, 53, 54)
+    BACKGROUND_COLOR = (35, 35, 35)
     EVENT_COLOR = (199, 50, 50)
     SELECTED_COLOR = (245, 229, 86)
     INPUT_HOVERED_COLOR = (105, 105, 105)

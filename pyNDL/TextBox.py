@@ -2,7 +2,7 @@ import pygame
 
 
 class TextBox:
-    INPUT_COLOR_ACTIVE = (45, 45, 45)
+    INPUT_COLOR_ACTIVE = (40, 40, 40)
     INPUT_COLOR_PASSIVE = (31, 30, 30)
 
     def __init__(self, display, on_value_changed, pos=(0, 0), size=(0, 0), font_size=15, on_clicked = None, is_blocked=False, is_dropdown=False, dropdown=None):
@@ -80,8 +80,8 @@ class TextBox:
         elif text.get_rect().width < self.size[0] - self.size[0] / 35 and self.delta_x < 0:
             self.delta_x += self.size[0] / 50
         if self.is_active:
-            rect = pygame.Rect(self.get_cursor_x(text.get_rect().width), 5, 2, self.size[1] - 10)
-            pygame.draw.rect(self.display, (255, 255, 255), rect, 0,
+            rect = pygame.Rect(self.get_cursor_x(text.get_rect().width), self.size[1]//4, 2, self.size[1]//2)
+            pygame.draw.rect(self.display, (200, 200, 200), rect, 0,
                              5)
 
         if self.current_dropdown:

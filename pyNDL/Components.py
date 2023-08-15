@@ -99,12 +99,12 @@ class GoBackButton(Button):
 
 
 class NameSetter:
-    BACKGROUND_COLOR = (51, 51, 51)
-    title_font = pygame.font.SysFont('arial', 20)
+    BACKGROUND_COLOR = (25, 25, 25)
+    title_font = pygame.font.SysFont('arial', 18)
 
     def __init__(self, pyNDL, display, pin):
         self.display = display
-        self.size = (350, 83)
+        self.size = (350, 55)
         self.pos = None
         # (self.display.get_size()[0] / 2 - self.size[0]/2, self.display.get_size()[1] / 2 - self.size[1]/2)
 
@@ -169,7 +169,7 @@ class ScrollView:
 
         self.y_delta = 0
 
-        self.background_color = (51, 51, 51)
+        self.background_color = (25, 25, 25)
 
     def frame(self, camera_delta, events, pos):
         rect = pygame.Rect(0, 0, self.size[0], self.size[1])
@@ -222,7 +222,7 @@ def get_pos_with_delta(delta, pos):
 
 
 class Selector:
-    BACKGROUND_COLOR = (51, 51, 51)
+    BACKGROUND_COLOR = (18, 18, 18)
     title_font = pygame.font.SysFont('arial', 20)
 
     def __init__(self, display, pos, size, hint, items, viewer, create_viewer=None, pyNDL=None):
@@ -364,6 +364,8 @@ class FunctionSelector(Selector):
         self.current_moving_func = None
 
     def on_drag(self, viewer, camera_delta, mouse_pos):
+        if isinstance(viewer, CreateFunction):
+            return
         if not self.current_moving_func:
             from pyNDL.Prefabs import VarAndFunc
             func = self.pyNDL.add_node(VarAndFunc.Func(), mouse_pos)
@@ -378,7 +380,7 @@ class FunctionSelector(Selector):
 
 
 class Viewer:
-    FOCUSED_COLOR = (64, 63, 63)
+    FOCUSED_COLOR = (25, 25, 25)
     main_font = pygame.font.SysFont('arial', 15)
 
     def __init__(self, pyNDL, display, pos, delta_pos, size):
@@ -404,7 +406,7 @@ class Viewer:
             pygame.draw.rect(self.display, self.FOCUSED_COLOR, rect, 0, 1)  # Background
 
         rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
-        pygame.draw.rect(self.display, (0, 0, 0), rect, 1, 1)
+        pygame.draw.rect(self.display, (50,50, 50), rect, 1, 1)
 
         text = self.main_font.render(self.text, True, (255, 255, 255))
         self.display.blit(text, (self.pos[0] + 10, self.pos[1] + self.size[1] / 2 - text.get_rect().height / 2))
@@ -477,6 +479,8 @@ class VariableSelector(Selector):
         self.current_moving_var = None
 
     def on_drag(self, viewer, camera_delta, mouse_pos):
+        if isinstance(viewer, CreateVariable):
+            return
         if not self.current_moving_var:
             keys = pygame.key.get_pressed()
             var = None
@@ -522,7 +526,7 @@ class CreateVariable(Viewer):
 
 
 class TopBar:
-    BACKGROUND_COLOR = (61, 61, 61)
+    BACKGROUND_COLOR = (18, 18, 18)
 
     def __init__(self, pyNDL, display, pos, size):
         self.pyNDL = pyNDL
@@ -541,7 +545,7 @@ class TopBar:
 
 
 class LeftBar:
-    BACKGROUND_COLOR = (61, 61, 61)
+    BACKGROUND_COLOR = (18, 18, 18)
 
     def __init__(self, pyNDL, display, pos, size):
 
