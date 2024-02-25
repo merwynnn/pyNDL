@@ -6,7 +6,7 @@ from pyNDL.TextBox import TextBox
 
 
 class NodeSelector:
-    BACKGROUND_COLOR = (51, 51, 51)
+    BACKGROUND_COLOR = (25, 25, 25)
 
     def __init__(self, pyNDL, display, nodes):
         self.pyNDL = pyNDL
@@ -15,13 +15,13 @@ class NodeSelector:
 
         self.isvisible = False
         self.pos = (0, 0)
-        self.size = (350, 490)
+        self.size = (350, 400)
 
         self.text_box = TextBox(self.display, self.search, size=(self.size[0], 40))
 
         self.node_pickers = []
 
-        self.node_picker_height = 50
+        self.node_picker_height = 40
         self.result_amount = 9
 
         self.selected_row = 0
@@ -128,7 +128,7 @@ class NodeSelector:
 
 
 class NodePicker:
-    FOCUSED_COLOR = (64, 63, 63)
+    FOCUSED_COLOR = (35, 35, 35)
     main_font = pygame.font.SysFont('arial', 15)
 
     def __init__(self, display, node, pos=(0, 0), size=(0, 0)):

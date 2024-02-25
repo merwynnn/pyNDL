@@ -215,9 +215,12 @@ class Input(Pin):
                 else:
                     self.text_box.text = str(self._value)
             self.text_box.is_active = False
-        from Shyne.Sprite import Sprite
-        if type(self._value) is Sprite:
-            self._value = self.node.pyNDL.parent.shyne.get_sprite_with_id(self._value.id)
+        try:
+            from Shyne.Sprite import Sprite
+            if type(self._value) is Sprite:
+                self._value = self.node.pyNDL.parent.shyne.get_sprite_with_id(self._value.id)
+        except:
+            pass
 
     def __deepcopy__(self, memo):
         new_input = Input(self.name, memo[-1], is_execution_pin=self.is_execution_pin, ptype=self.type, text_box_width_mult=self.text_box_width_mult, show_text_box=self.show_text_box, is_deletable=self.is_deletable, is_dropdown=self.is_dropdown, dropdown=self.dropdown)

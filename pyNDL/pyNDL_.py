@@ -13,7 +13,7 @@ from pyNDL.Colors import colors
 
 
 class pyNDL:
-    BACKGROUND_COLOR = (61, 61, 61)
+    BACKGROUND_COLOR = (18, 18, 18)
 
     def __init__(self, filename, win, pos, size, show_top_bar=True, allow_save=True, parent=None,
                  additional_colors=None, on_action=None):
