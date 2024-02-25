@@ -7,9 +7,9 @@ PyNDL is a dynamic node-based visual programming language created using Pygame.
 
 ## Screenshots
 
-![App Screenshot](pyNDL/Screenshots/Screenshot1.png)
-![App Screenshot](pyNDL/Screenshots/Screenshot2.png)
-![App Screenshot](pyNDL/Screenshots/Screenshot3.png)
+![App Screenshot](Screenshots/Screenshot1.png)
+![App Screenshot](Screenshots/Screenshot2.png)
+![App Screenshot](Screenshots/Screenshot3.png)
 
 
 ## Installation
